@@ -39,6 +39,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - name: Run Docker Container
+        run: docker run -p 8080:3000 wellingtonteste/testedocker
+
       # - name: Node.js
       #   uses: actions/setup-node@v2
       #   with:
