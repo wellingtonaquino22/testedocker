@@ -13,4 +13,4 @@ router.get('/', (req, res)=>{
     res.send('Hello World')
 })
 
-app.listen(PORT, HOST); 
+app.listen(PORT, HOST)
