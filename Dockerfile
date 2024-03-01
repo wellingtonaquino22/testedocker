@@ -10,7 +10,7 @@ RUN git pull
 
 RUN npm install
 
-# RUN npm run build
+RUN npm run build
 
 CMD ["node", "index.js"]
 
