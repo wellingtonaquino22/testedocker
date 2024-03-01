@@ -77,7 +77,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: wellingtonteste/testedocker
+          images: wellingtonteste/testedocker 
 
       - name: Build and push Docker images
         run: |
@@ -86,8 +86,3 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
-
-      # You can add any additional steps you need, such as testing
-
-      - name: Stop and remove containers
-        run: docker-compose -f "docker-compose.yml" down
