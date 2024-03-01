@@ -6,7 +6,7 @@ const router = Router();
 const PORT = 3000;
 const HOST = '0.0.0.0';
 
-const app = express()
+const app = express();
 app.use('/', router)
 
 router.get('/', (req, res)=>{
