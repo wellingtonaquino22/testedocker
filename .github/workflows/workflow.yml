@@ -29,12 +29,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: wellingtonteste/testedocker
+          images: wellingtonteste/testedocker2
       
       - uses: actions/checkout@v2
       - name: Build the stack
         run: docker-compose up -d
-        
+
       # - name: Test
       #   run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
 
