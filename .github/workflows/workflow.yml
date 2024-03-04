@@ -41,8 +41,8 @@ jobs:
       
       - name: Build and Start Docker-compose
         run: |
-          docker-compose build --no-cache app
-          docker-compose up -d app
+          docker-compose -f /docker-compose.yml build --no-cache app
+          docker-compose -f /docker-compose.yml up -d app
 
       # - name: Node.js
       #   uses: actions/setup-node@v2
