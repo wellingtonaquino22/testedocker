@@ -1,3 +1,54 @@
+# name: Continuous Integration
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   continuous-integration:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v3
+
+#       - name: Log in to Docker Hub
+#         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+#         with:
+#           username: wellingtonteste
+#           password: dckr_pat_YbdkM-6ty6CFV8iIdm9sUhqwvTo
+
+#       # - name: Build and push Docker image
+#       #   run: |
+#       #     docker build -t wellingtonteste/testedocker .
+#       #     docker login -u wellingtonteste -p dckr_pat_YbdkM-6ty6CFV8iIdm9sUhqwvTo
+#       #     docker push wellingtonteste/testedocker
+
+#       - name: Extract metadata (tags, labels) for Docker
+#         id: meta
+#         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+#         with:
+#           images: wellingtonteste/testedocker
+
+#       - name: Build and push Docker image
+#         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+#         with:
+#           context: .
+#           push: true
+#           tags: ${{ steps.meta.outputs.tags }}
+#           labels: ${{ steps.meta.outputs.labels }}
+
+#       # - name: Node.js
+#       #   uses: actions/setup-node@v2
+#       #   with:
+#       #     node-version: 18
+
+#       # - name: Run install and build
+#       #   run: |
+#       #     yarn install
+#       #     yarn build
+
 name: Continuous Integration
 
 on:
@@ -9,6 +60,14 @@ jobs:
   continuous-integration:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3308:3006
+        env:
+          MYSQL_ROOT_PASSWORD: root
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -19,36 +78,23 @@ jobs:
           username: wellingtonteste
           password: dckr_pat_YbdkM-6ty6CFV8iIdm9sUhqwvTo
 
-      # - name: Build and push Docker image
-      #   run: |
-      #     docker build -t wellingtonteste/testedocker .
-      #     docker login -u wellingtonteste -p dckr_pat_YbdkM-6ty6CFV8iIdm9sUhqwvTo
-      #     docker push wellingtonteste/testedocker
+      - name: Build and push MySQL image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          push: true
+          tags: wellingtonteste/mysql:5.7
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: wellingtonteste/testedockerrr
+          images: wellingtonteste/testedocker
 
-      - name: Build and push Docker image
+      - name: Build and push App image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      
-      - name: Deploy with Docker Compose
-        run: |
-          docker-compose up -d
-
-      # - name: Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: 18
-
-      # - name: Run install and build
-      #   run: |
-      #     yarn install
-      #     yarn build
