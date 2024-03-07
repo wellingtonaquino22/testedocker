@@ -16,31 +16,33 @@
 
 # CMD ["node", "index.js"]
 
-# Use uma imagem leve do Node.js como base
-FROM node:alpine
+# Stage 1: Construa a aplicação Node.js
+FROM node:alpine as builder
 
-# Defina o diretório de trabalho dentro da imagem
 WORKDIR /usr/app
 
-# Copie o código da aplicação para o diretório de trabalho
 COPY . .
 
-# Instale as dependências e faça o build da aplicação
 RUN apk add --no-cache git
 RUN npm install
 RUN npm run build
 
-# Use uma imagem MySQL existente
-FROM mysql:latest
+# Stage 2: Configuração do MySQL
+FROM mysql:5.7
 
-# Copie o arquivo de configuração para a inicialização do banco de dados
-COPY mysql_config.sql /docker-entrypoint-initdb.d/
+WORKDIR /docker-entrypoint-initdb.d
 
-# Exponha a porta da aplicação (se necessário)
-EXPOSE 3000
+COPY mysql_config.sql .
 
-# Retorne ao diretório de trabalho da aplicação
+# Stage 3: Imagem final
+FROM node:alpine
+
 WORKDIR /usr/app
+
+COPY --from=builder /usr/app .
+
+# Exponha a porta da aplicação
+EXPOSE 3000
 
 # CMD para iniciar a aplicação
 CMD ["node", "index.js"]
