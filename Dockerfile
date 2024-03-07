@@ -49,10 +49,10 @@ RUN npm run build
 
 # Instale o MySQL e configure
 RUN apk add --no-cache mysql mysql-client
-COPY mysql_config.sql /docker-entrypoint-initdb.d/
+COPY mysql_config.sql /usr/app/docker-entrypoint-initdb.d/
 
 # Exponha a porta da aplicação
 EXPOSE 3000
 
 # CMD para iniciar a aplicação
-CMD ["node", "index.js"] 
+CMD ["node", "index.js"]
